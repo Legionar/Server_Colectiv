@@ -1,4 +1,4 @@
-package entity;
+package login.entity;
 
 import javax.persistence.*;
 import java.sql.Blob;

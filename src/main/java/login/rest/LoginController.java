@@ -3,6 +3,7 @@ package login.rest;
 import login.Service.UserService;
 import login.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/users")
+@ComponentScan("login.Service")
 public class LoginController {
     @Autowired
     private UserService userService;

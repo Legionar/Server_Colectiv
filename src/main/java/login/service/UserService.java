@@ -1,16 +1,17 @@
-package login.Service;
+package login.service;
 
 import login.entity.User;
 import login.exception.Messages;
 import login.exception.UserException;
 import login.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 
 @Service
+@Component
 public class UserService {
     private UserRepository userRepository;
 

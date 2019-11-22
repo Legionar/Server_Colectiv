@@ -1,16 +1,17 @@
-package Service;
+package login.service;
 
-import entity.User;
-import exception.Messages;
-import exception.UserException;
+import login.entity.User;
+import login.exception.Messages;
+import login.exception.UserException;
+import login.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import repository.UserRepository;
-
 
 import java.util.List;
 
 @Service
+@Component
 public class UserService {
     private UserRepository userRepository;
 
@@ -19,11 +20,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User loginByEmail(String email, String password){
+    public User loginByEmail(String email, String password) {
         return this.userRepository.loginByEmail(email, password);
     }
 
-    public List<User> getUsers(){
+    public List<User> getUsers() {
         return this.userRepository.findAll();
     }
 
@@ -33,7 +34,7 @@ public class UserService {
 
     public User deleteUser(Long id) throws UserException {
         User user = this.userRepository.getOne(id);
-        if(user==null)
+        if (user == null)
             throw new UserException(Messages.USER_NOT_FOUND);
         this.userRepository.delete(user);
         return user;

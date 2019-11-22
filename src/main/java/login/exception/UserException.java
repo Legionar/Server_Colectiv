@@ -1,4 +1,4 @@
-package exception;
+package login.exception;
 
 public class UserException extends Exception {
     public UserException() {

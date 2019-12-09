@@ -24,9 +24,9 @@ public class LoginController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity login(@RequestBody UserDTO user) {
-        User user1 = userService.loginByEmail(user.getUsername(), user.getPassword());
-        return new ResponseEntity(user1 != null ? HttpStatus.ACCEPTED : HttpStatus.FORBIDDEN);
+    public ResponseEntity<User> login(@RequestBody UserDTO user) {
+        User response = userService.loginByEmail(user.getUsername(), user.getPassword());
+        return new ResponseEntity<>(response, response != null ? HttpStatus.ACCEPTED : HttpStatus.FORBIDDEN);
     }
 
 }

@@ -5,13 +5,11 @@ import login.exception.Messages;
 import login.exception.UserException;
 import login.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@Component
 public class UserService {
     private UserRepository userRepository;
 
@@ -20,7 +18,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User loginByEmail(String email, String password) {
+    public User getUserByMail(String email, String password) {
         return this.userRepository.loginByEmail(email, password);
     }
 
@@ -38,6 +36,11 @@ public class UserService {
             throw new UserException(Messages.USER_NOT_FOUND);
         this.userRepository.delete(user);
         return user;
+    }
+
+    public boolean isAdmin(String email, String password) {
+        User user = getUserByMail(email, password);
+        return user != null && user.getAdmin() == 1;
     }
 
 }

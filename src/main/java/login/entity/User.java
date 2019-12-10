@@ -55,6 +55,17 @@ public class User {
     @Column(name = "profile_picture")
     private Blob profile_picture;
 
+    public Integer getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Integer admin) {
+        this.admin = admin;
+    }
+
+    @Column(name = "admin")
+    private Integer admin;
+
     public User getSupervisor() {
         return supervisor;
     }

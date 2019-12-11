@@ -1,5 +1,8 @@
 package login.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.sql.Blob;
 import java.util.Date;
@@ -20,6 +23,7 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "supervisor_id", nullable = false)
+    @JsonIgnore
     private User supervisor;
 
     @Column(name = "email")
@@ -40,7 +44,7 @@ public class User {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "date")
+    @Column(name = "birthdate")
     private Date date;
 
     @Column(name = "role")
@@ -53,6 +57,7 @@ public class User {
     private String consulting_level;
 
     @Column(name = "profile_picture")
+    @JsonIgnore
     private Blob profile_picture;
 
     public User getSupervisor() {

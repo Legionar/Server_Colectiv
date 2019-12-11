@@ -26,6 +26,7 @@ public class LoginController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<User> login(@RequestBody UserDTO user) {
         User response = userService.loginByEmail(user.getUsername(), user.getPassword());
+        response.setSupervisor(null);
         return new ResponseEntity<>(response, response != null ? HttpStatus.ACCEPTED : HttpStatus.FORBIDDEN);
     }
 

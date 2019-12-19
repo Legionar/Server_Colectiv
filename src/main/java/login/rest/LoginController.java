@@ -41,4 +41,10 @@ public class LoginController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
     }
+
+    @RequestMapping(method = RequestMethod.PUT)
+    public ResponseEntity<?> updateUser(@RequestBody User user) {
+        User result = userService.updateUser(user);
+        return new ResponseEntity<>(user.equals(result) ? HttpStatus.OK : HttpStatus.NOT_MODIFIED);
+    }
 }

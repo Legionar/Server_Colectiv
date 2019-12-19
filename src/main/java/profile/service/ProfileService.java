@@ -23,4 +23,10 @@ public class ProfileService {
     private Profile createProfileFromRequest(ProfileDTO profileDTO, Long userId, Long supervisorId) {
         return new Profile();
     }
+
+//    public Profile getProfile(Long userId, Long supervisorId, Long adminId) {
+//        if (userId != null) {
+//            return profileRepository.
+//        }
+//    }
 }

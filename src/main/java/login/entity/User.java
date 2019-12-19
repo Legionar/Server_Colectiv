@@ -1,8 +1,11 @@
 package login.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Blob;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user")
@@ -20,6 +23,7 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "supervisor_id", nullable = false)
+    @JsonIgnore
     private User supervisor;
 
     @Column(name = "email")
@@ -168,5 +172,29 @@ public class User {
 
     public void setProfile_picture(Blob profile_picture) {
         this.profile_picture = profile_picture;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return id.equals(user.id) &&
+                email.equals(user.email) &&
+                password.equals(user.password) &&
+                first_name.equals(user.first_name) &&
+                last_name.equals(user.last_name) &&
+                Objects.equals(phone, user.phone) &&
+                Objects.equals(address, user.address) &&
+                Objects.equals(date, user.date) &&
+                Objects.equals(role, user.role) &&
+                Objects.equals(region, user.region) &&
+                Objects.equals(consulting_level, user.consulting_level) &&
+                Objects.equals(admin, user.admin);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, supervisor, email, password, first_name, last_name, phone, address, date, role, region, consulting_level, admin);
     }
 }

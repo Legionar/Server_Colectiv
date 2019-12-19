@@ -31,6 +31,7 @@ public class ProfileController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<HttpStatus> createProfile(@RequestBody ProfileDTO profileDTO, @RequestBody UserDTO userDTO) {
         User user = userService.getUserByMail(userDTO.getUsername(), userDTO.getPassword());
+        user.setProfile_picture(profileDTO.getProfilePicture());
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
@@ -39,5 +40,11 @@ public class ProfileController {
         } else {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<?> getProfile(@RequestBody UserDTO userDTO) {
+        User user = userService.getUserByMail(userDTO.getUsername(), userDTO.getPassword());
+        return null;
     }
 }

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/users")
 @ComponentScan("login.service")
-@CrossOrigin
 public class LoginController {
 
     private final UserService userService;

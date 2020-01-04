@@ -66,4 +66,7 @@ public class UserService {
         return local;
     }
 
+    public User getById(Long id) {
+        return userRepository.getOne(id);
+    }
 }

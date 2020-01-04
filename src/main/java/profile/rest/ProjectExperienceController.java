@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/experience")
+@RequestMapping("/profiles/experience")
 @ComponentScan({"profile.service","login.service"})
 public class ProjectExperienceController {
     private ProjectExperienceService projectExperienceService;

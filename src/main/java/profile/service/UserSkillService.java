@@ -1,11 +1,17 @@
 package profile.service;
 
+import login.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import profile.entity.Skill;
 import profile.entity.UserSkill;
 import profile.repository.UserSkillRepository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import static java.util.stream.Collectors.toSet;
 
 @Service
 public class UserSkillService {
@@ -22,6 +28,18 @@ public class UserSkillService {
 
     public List<UserSkill> getSkillsForUser(String email) {
         return userSkillRepository.findAllByUserEmail(email);
+    }
+
+    public Set<User> getAllUsersWithSkills(Set<Skill> skills) {
+        Set<User> users = new HashSet<>();
+        skills.forEach(skill->
+                users.addAll(
+                userSkillRepository
+                        .findAllBySkill(skill)
+                        .stream()
+                        .map(UserSkill::getUser)
+                        .collect(toSet())));
+        return users;
     }
 
 }

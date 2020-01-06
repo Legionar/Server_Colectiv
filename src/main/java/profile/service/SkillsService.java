@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import profile.entity.Skill;
 import profile.repository.SkillRepository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @ComponentScan("profile.repository")
@@ -24,5 +26,11 @@ public class SkillsService {
 
     public boolean createNewSkill(Skill skill) {
         return skillRepository.saveAndFlush(skill) != null;
+    }
+
+    public Set<Skill> getAllByName(List<String> names) {
+        Set<Skill> skills = new HashSet<>();
+        names.forEach(name -> skills.addAll(skillRepository.findAllByName(name)));
+        return skills;
     }
 }

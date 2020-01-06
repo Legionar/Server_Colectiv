@@ -1,6 +1,7 @@
 package login.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import profile.entity.Action;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,7 +25,7 @@ import java.util.Objects;
                 query = "SELECT u FROM User u WHERE u.email=: email AND u.password =: password"
         )
 })
-public class User {
+public class User implements Action {
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

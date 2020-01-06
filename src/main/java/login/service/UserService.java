@@ -6,20 +6,27 @@ import login.exception.UserException;
 import login.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import profile.service.RequestCreator;
+import profile.service.RequestsService;
 
 import java.util.List;
 
-@Service
-public class UserService {
+@Service("userService")
+public class UserService extends RequestCreator {
     private UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, RequestsService requestsService) {
+        super(requestsService);
         this.userRepository = userRepository;
     }
 
-    public User getUserByMail(String email, String password) {
-        return this.userRepository.loginByEmail(email, password);
+    public User getUserByEmailAndPassword(String email, String password) {
+        return userRepository.loginByEmail(email, password);
+    }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     public List<User> getUsers() {
@@ -39,7 +46,7 @@ public class UserService {
     }
 
     public boolean isAdmin(String email, String password) {
-        User user = getUserByMail(email, password);
+        User user = getUserByEmailAndPassword(email, password);
         return user != null && user.getAdmin() == 1;
     }
 

@@ -36,7 +36,7 @@ public class LoginController {
         if (failedAttempts >= 3) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        User response = userService.getUserByMail(user.getUsername(), user.getPassword());
+        User response = userService.getUserByEmailAndPassword(user.getUsername(), user.getPassword());
         if (response == null) {
             failedAttempts++;
             blockedEmails.put(user.getUsername(), failedAttempts);
@@ -72,7 +72,7 @@ public class LoginController {
 
     @RequestMapping(method = RequestMethod.GET, path = "/supervisor")
     public ResponseEntity<List<User>> getUsersUnderSupervisor(@RequestBody UserDTO supervisorCredentials) {
-        User supervisor = userService.getUserByMail(supervisorCredentials.getUsername(), supervisorCredentials.getPassword());
+        User supervisor = userService.getUserByEmailAndPassword(supervisorCredentials.getUsername(), supervisorCredentials.getPassword());
         if (supervisor == null) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }

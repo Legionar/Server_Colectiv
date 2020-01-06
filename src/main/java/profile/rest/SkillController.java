@@ -7,11 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import profile.entity.Skill;
 import profile.entity.UserSkill;
 import profile.service.SkillsService;
@@ -73,11 +69,13 @@ public class SkillController {
     }
 
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<?> createSkill(@RequestBody Skill skill) {
-        if (skill == null) {
+    public ResponseEntity<?> createSkill(@RequestBody Skill skill, @RequestParam String user) {
+        User userByEmail = userService.getUserByEmail(user);
+        if (skill == null || userByEmail == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(skillsService.createNewSkill(skill) ? HttpStatus.CREATED : HttpStatus.INTERNAL_SERVER_ERROR);
+        skillsService.createNewSkill(skill, userByEmail);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @RequestMapping(path = "/employees", method = RequestMethod.GET)

@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "project_experience")
-public class ProjectExperience {
+public class ProjectExperience implements Action {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

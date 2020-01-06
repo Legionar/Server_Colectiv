@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "user_skill_technology")
-public class UserSkill {
+public class UserSkill implements Action {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

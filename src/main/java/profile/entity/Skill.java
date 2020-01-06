@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "skill")
-public class Skill {
+public class Skill implements Action {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

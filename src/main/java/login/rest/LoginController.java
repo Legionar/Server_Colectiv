@@ -6,11 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;
@@ -72,5 +68,14 @@ public class LoginController {
         }
         emails.forEach(email -> blockedEmails.remove(email));
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/supervisor")
+    public ResponseEntity<List<User>> getUsersUnderSupervisor(@RequestBody UserDTO supervisorCredentials) {
+        User supervisor = userService.getUserByMail(supervisorCredentials.getUsername(), supervisorCredentials.getPassword());
+        if (supervisor == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        return new ResponseEntity<>(userService.getUsersUnderSupervisor(supervisor), HttpStatus.OK);
     }
 }

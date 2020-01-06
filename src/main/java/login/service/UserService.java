@@ -7,7 +7,6 @@ import login.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 @Service
@@ -46,7 +45,7 @@ public class UserService {
 
     public User updateUser(User user) {
         User old = userRepository.getOne(user.getId());
-        User newUser = merge(old,user);
+        User newUser = merge(old, user);
         userRepository.saveAndFlush(newUser);
         return newUser;
     }
@@ -68,5 +67,9 @@ public class UserService {
 
     public User getById(Long id) {
         return userRepository.getOne(id);
+    }
+
+    public List<User> getUsersUnderSupervisor(User supervisor) {
+        return userRepository.findAllBySupervisor(supervisor);
     }
 }

@@ -1,18 +1,10 @@
 package login.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import profile.entity.Action;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Blob;
 import java.util.Date;
 import java.util.Objects;
@@ -25,6 +17,7 @@ import java.util.Objects;
                 query = "SELECT u FROM User u WHERE u.email=: email AND u.password =: password"
         )
 })
+@JsonDeserialize(as = User.class)
 public class User implements Action {
     @Column(name = "id")
     @Id

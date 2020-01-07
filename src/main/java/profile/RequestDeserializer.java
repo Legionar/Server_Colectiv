@@ -18,10 +18,10 @@ public class RequestDeserializer extends JsonDeserializer<Action> {
     public Action deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
         ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
         ObjectNode root = mapper.readTree(jsonParser);
-        if (root.has("phone")) {
+        if (root.has("project")) {
             return mapper.readValue(root.toString(), ProjectExperience.class);
         }
-        if (root.has("project")) {
+        if (root.has("phone")) {
             return mapper.readValue(root.toString(), ProjectExperience.class);
         }
         if (root.has("skill")) {

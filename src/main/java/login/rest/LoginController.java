@@ -81,8 +81,8 @@ public class LoginController {
     }
 
     @RequestMapping(path = "/picture", method = RequestMethod.PUT)
-    public ResponseEntity<?> uploadProfilePicture(@NotNull @RequestBody byte[] picture, @NotNull @RequestParam String email) {
-        User userByEmail = userService.getUserByEmail(email);
+    public ResponseEntity<?> uploadProfilePicture(@NotNull @RequestBody byte[] picture, @NotNull @RequestParam String user) {
+        User userByEmail = userService.getUserByEmail(user);
         if (userByEmail == null || picture.length == 0) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -91,6 +91,19 @@ public class LoginController {
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(path = "/picture", method = RequestMethod.GET)
+    public ResponseEntity<?> getProfilePicture(@NotNull @RequestBody UserDTO userDTO) {
+        User user = userService.getUserByEmailAndPassword(userDTO.getUsername(), userDTO.getPassword());
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        try {
+            return new ResponseEntity<>(user.getProfile_picture().getBytes(1, (int) user.getProfile_picture().length()), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sql.rowset.serial.SerialBlob;
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +37,7 @@ public class LoginController {
         if (failedAttempts >= 3) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        User response = userService.getUserByMail(user.getUsername(), user.getPassword());
+        User response = userService.getUserByEmailAndPassword(user.getUsername(), user.getPassword());
         if (response == null) {
             failedAttempts++;
             blockedEmails.put(user.getUsername(), failedAttempts);
@@ -72,10 +73,37 @@ public class LoginController {
 
     @RequestMapping(method = RequestMethod.GET, path = "/supervisor")
     public ResponseEntity<List<User>> getUsersUnderSupervisor(@RequestBody UserDTO supervisorCredentials) {
-        User supervisor = userService.getUserByMail(supervisorCredentials.getUsername(), supervisorCredentials.getPassword());
+        User supervisor = userService.getUserByEmailAndPassword(supervisorCredentials.getUsername(), supervisorCredentials.getPassword());
         if (supervisor == null) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         return new ResponseEntity<>(userService.getUsersUnderSupervisor(supervisor), HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/picture", method = RequestMethod.PUT)
+    public ResponseEntity<?> uploadProfilePicture(@NotNull @RequestBody byte[] picture, @NotNull @RequestParam String user) {
+        User userByEmail = userService.getUserByEmail(user);
+        if (userByEmail == null || picture.length == 0) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        try {
+            userService.uploadProfilePicture(userByEmail, new SerialBlob(picture));
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(path = "/picture", method = RequestMethod.GET)
+    public ResponseEntity<?> getProfilePicture(@NotNull @RequestBody UserDTO userDTO) {
+        User user = userService.getUserByEmailAndPassword(userDTO.getUsername(), userDTO.getPassword());
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        try {
+            return new ResponseEntity<>(user.getProfile_picture().getBytes(1, (int) user.getProfile_picture().length()), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

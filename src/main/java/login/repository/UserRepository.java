@@ -18,4 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User loginByEmail(@Param("email") String email, @Param("password") String password);
 
     List<User> findAllBySupervisor(User supervisor);
+
+    User findByEmail(String email);
 }

@@ -14,11 +14,12 @@ import java.util.Set;
 import static java.util.stream.Collectors.toSet;
 
 @Service
-public class UserSkillService {
+public class UserSkillService extends RequestCreator{
     private UserSkillRepository userSkillRepository;
 
     @Autowired
-    public UserSkillService (UserSkillRepository userSkillRepository) {
+    public UserSkillService (UserSkillRepository userSkillRepository, RequestsService requestsService) {
+        super(requestsService);
         this.userSkillRepository = userSkillRepository;
     }
 

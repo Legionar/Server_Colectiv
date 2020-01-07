@@ -1,16 +1,14 @@
 package profile.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "skill")
-public class Skill {
+@JsonDeserialize(as = Skill.class)
+public class Skill implements Action {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sql.rowset.serial.SerialBlob;
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.List;
@@ -77,5 +78,19 @@ public class LoginController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         return new ResponseEntity<>(userService.getUsersUnderSupervisor(supervisor), HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/picture", method = RequestMethod.PUT)
+    public ResponseEntity<?> uploadProfilePicture(@NotNull @RequestBody byte[] picture, @NotNull @RequestParam String email) {
+        User userByEmail = userService.getUserByEmail(email);
+        if (userByEmail == null || picture.length == 0) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        try {
+            userService.uploadProfilePicture(userByEmail, new SerialBlob(picture));
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

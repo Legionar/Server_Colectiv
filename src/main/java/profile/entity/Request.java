@@ -2,6 +2,8 @@ package profile.entity;
 
 import login.entity.User;
 
+import java.util.Objects;
+
 public class Request {
     private RequestType type;
     private User user;
@@ -48,5 +50,21 @@ public class Request {
 
     public void setAction(Action action) {
         this.action = action;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Request)) return false;
+        Request request = (Request) o;
+        return type == request.type &&
+                Objects.equals(user, request.user) &&
+                Objects.equals(supervisor, request.supervisor) &&
+                Objects.equals(action, request.action);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, user, supervisor, action);
     }
 }

@@ -18,6 +18,7 @@ import java.util.List;
 
 @RestController
 @ComponentScan("profile.service")
+@RequestMapping("/requests")
 public class PendingRequestsController {
     private RequestsService requestsService;
     private UserService userService;
@@ -35,5 +36,25 @@ public class PendingRequestsController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         return new ResponseEntity<>(requestsService.getRequestsForSupervisor(supervisor), HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<HttpStatus> approveRequest(@RequestBody Request request) {
+        try {
+            requestsService.approveRequest(request);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE)
+    public ResponseEntity<HttpStatus> denyRequest(@RequestBody Request request) {
+        try {
+            requestsService.denyRequest(request);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

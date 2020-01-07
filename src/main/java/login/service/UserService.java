@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import profile.service.RequestCreator;
 import profile.service.RequestsService;
 
+import java.sql.Blob;
 import java.util.List;
 
 @Service("userService")
@@ -78,5 +79,10 @@ public class UserService extends RequestCreator {
 
     public List<User> getUsersUnderSupervisor(User supervisor) {
         return userRepository.findAllBySupervisor(supervisor);
+    }
+
+    public void uploadProfilePicture(User user, Blob picture) {
+        user.setProfile_picture(picture);
+        userRepository.saveAndFlush(user);
     }
 }

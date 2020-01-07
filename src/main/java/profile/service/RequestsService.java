@@ -33,6 +33,9 @@ public class RequestsService {
     }
 
     public List<Request> getRequestsForSupervisor(User supervisor) {
+        if (supervisor.getAdmin() == 1) {
+            return allRequests;
+        }
         return allRequests
                 .stream()
                 .filter(request -> request.getUser().equals(supervisor))
@@ -43,7 +46,10 @@ public class RequestsService {
         allRequests.add(request);
     }
 
-    public void approveRequest(Request request) {
+    public void approveRequest(Request request) throws IllegalArgumentException {
+        if (!allRequests.contains(request)) {
+            throw new IllegalArgumentException();
+        }
         allRequests.remove(request);
         switch (request.getType()) {
             case Create:
@@ -56,7 +62,10 @@ public class RequestsService {
         }
     }
 
-    private void handleDeleteRequest(Request request) {
+    private void handleDeleteRequest(Request request) throws IllegalArgumentException {
+        if (!allRequests.contains(request)) {
+            throw new IllegalArgumentException();
+        }
         Action action = request.getAction();
         if (action instanceof User) {
             userRepository.delete((User) action);
@@ -86,5 +95,9 @@ public class RequestsService {
         if (action instanceof ProjectExperience) {
             projectExperienceRepository.saveAndFlush((ProjectExperience) action);
         }
+    }
+
+    public void denyRequest(Request request) {
+        allRequests.remove(request);
     }
 }

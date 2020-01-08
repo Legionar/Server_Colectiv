@@ -1,6 +1,8 @@
 package login.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import profile.entity.Action;
 
 import javax.persistence.*;
 import java.sql.Blob;
@@ -15,7 +17,8 @@ import java.util.Objects;
                 query = "SELECT u FROM User u WHERE u.email=: email AND u.password =: password"
         )
 })
-public class User {
+@JsonDeserialize(as = User.class)
+public class User implements Action {
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -196,6 +199,6 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, supervisor, email, password, first_name, last_name, phone, address, date, role, region, consulting_level, admin);
+        return Objects.hash(id, email, password, first_name, last_name, phone, address, date, role, region, consulting_level, admin);
     }
 }

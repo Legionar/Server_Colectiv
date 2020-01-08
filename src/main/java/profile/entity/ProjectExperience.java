@@ -1,5 +1,6 @@
 package profile.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import login.entity.User;
 
 import javax.persistence.*;
@@ -7,7 +8,8 @@ import java.util.Date;
 
 @Entity
 @Table(name = "project_experience")
-public class ProjectExperience {
+@JsonDeserialize(as = ProjectExperience.class)
+public class ProjectExperience implements Action {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

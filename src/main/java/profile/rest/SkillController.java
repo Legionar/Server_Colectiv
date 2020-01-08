@@ -7,13 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.lang.Nullable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import profile.entity.Skill;
 import profile.entity.UserSkill;
 import profile.service.SkillsService;
 import profile.service.UserSkillService;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/profiles/skills")
@@ -33,7 +39,7 @@ public class SkillController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<?> getAllSkills(@RequestParam Long id, @RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> getAllSkills(@Nullable @RequestParam Long id, @RequestBody UserDTO userDTO) {
         if (userDTO != null) {
             List<Skill> allSkills = getAllSkills(userDTO);
             if (allSkills == null) {
@@ -46,7 +52,7 @@ public class SkillController {
             if (user == null) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            return new ResponseEntity<>(userSkillService.getSkillsForUser(user.getEmail()), HttpStatus.OK);
+            return new ResponseEntity<>(getSkillsForUser(user.getId()), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -68,10 +74,20 @@ public class SkillController {
     }
 
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<?> createSkill(@RequestBody Skill skill) {
-        if (skill == null) {
+    public ResponseEntity<?> createSkill(@RequestBody Skill skill, @RequestParam String user) {
+        User userByEmail = userService.getUserByEmail(user);
+        if (skill == null || userByEmail == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(skillsService.createNewSkill(skill) ? HttpStatus.CREATED : HttpStatus.INTERNAL_SERVER_ERROR);
+        skillsService.createNewSkill(skill, userByEmail);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @RequestMapping(path = "/employees", method = RequestMethod.GET)
+    public ResponseEntity<Set<User>> usersWithSKills(@RequestParam List<String> skills, @RequestBody UserDTO user) {
+        if (!userService.isAdmin(user.getUsername(), user.getPassword())) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        return new ResponseEntity<>(userSkillService.getAllUsersWithSkills(skillsService.getAllByName(skills)), HttpStatus.OK);
     }
 }

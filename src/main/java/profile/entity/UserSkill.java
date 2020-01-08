@@ -1,23 +1,25 @@
 package profile.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import login.entity.User;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "user_skill_technology")
-public class UserSkill {
+@JsonDeserialize(as = UserSkill.class)
+public class UserSkill implements Action {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn (name = "user_id")
+    @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne
-    @JoinColumn (name = "skill_id")
+    @JoinColumn(name = "skill_id")
     private Skill skill;
     @ManyToOne
-    @JoinColumn (name = "technology_id")
+    @JoinColumn(name = "technology_id")
     private Technology technology;
 
     public UserSkill() {

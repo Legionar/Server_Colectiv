@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import profile.entity.Skill;
-import profile.entity.UserSkill;
 import profile.service.SkillsService;
 import profile.service.UserSkillService;
 
@@ -39,7 +38,7 @@ public class SkillController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<?> getAllSkills(@Nullable @RequestParam Long id, @RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> getAllSkills(@Nullable @RequestParam Long id, @Nullable @RequestBody UserDTO userDTO) {
         if (userDTO != null) {
             List<Skill> allSkills = getAllSkills(userDTO);
             if (allSkills == null) {
@@ -52,7 +51,7 @@ public class SkillController {
             if (user == null) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            return new ResponseEntity<>(getSkillsForUser(user.getId()), HttpStatus.OK);
+            return new ResponseEntity<>(userSkillService.getSkillsForUser(user.getEmail()), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -63,14 +62,6 @@ public class SkillController {
             return null;
         }
         return skillsService.getAll();
-    }
-
-    private List<UserSkill> getSkillsForUser(Long userId) {
-        User user = userService.getById(userId);
-        if (user == null) {
-            return null;
-        }
-        return userSkillService.getSkillsForUser(user.getEmail());
     }
 
     @RequestMapping(method = RequestMethod.PUT)

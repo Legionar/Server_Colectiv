@@ -2,9 +2,19 @@ package login.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.hibernate.annotations.Proxy;
 import profile.entity.Action;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import java.sql.Blob;
 import java.util.Date;
 import java.util.Objects;
@@ -18,6 +28,7 @@ import java.util.Objects;
         )
 })
 @JsonDeserialize(as = User.class)
+@Proxy(lazy = false)
 public class User implements Action {
     @Column(name = "id")
     @Id

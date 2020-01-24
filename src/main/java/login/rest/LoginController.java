@@ -45,7 +45,7 @@ public class LoginController {
         return new ResponseEntity<>(response, response != null ? HttpStatus.ACCEPTED : HttpStatus.FORBIDDEN);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(path = "/id/",method = RequestMethod.GET)
     public ResponseEntity<User> getById(@NotNull @RequestBody Long id) {
             return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
     }

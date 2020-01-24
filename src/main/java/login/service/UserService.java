@@ -26,6 +26,10 @@ public class UserService extends RequestCreator {
         return userRepository.loginByEmail(email, password);
     }
 
+    public User getUserById(Long id){
+        return userRepository.getOne(id);
+    }
+
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }

@@ -45,14 +45,19 @@ public class LoginController {
         return new ResponseEntity<>(response, response != null ? HttpStatus.ACCEPTED : HttpStatus.FORBIDDEN);
     }
 
-    // For admin only
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<User>> getAllUsers(@NotNull @RequestBody UserDTO userDTO) {
+    public ResponseEntity<List<User>> getById(@NotNull @RequestBody UserDTO userDTO) {
         if (userService.isAdmin(userDTO.getUsername(), userDTO.getPassword())) {
             return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
+    }
+
+    // For admin only
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<User> getAllUsers(@NotNull @RequestBody Long id) {
+            return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT)

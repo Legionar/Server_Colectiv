@@ -1,3 +1,4 @@
+/*
 package Mail;
 
 import org.springframework.context.annotation.Bean;
@@ -11,3 +12,4 @@ public class MailSender {
         return sender;
     }
 }
+*/
